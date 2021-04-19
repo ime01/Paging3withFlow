@@ -13,6 +13,10 @@ FLOW
 
 JETPACK NAVIGATION
 
+SAFEARGS
+
+VIEWBINDING
+
 Screenshots below
 
 
