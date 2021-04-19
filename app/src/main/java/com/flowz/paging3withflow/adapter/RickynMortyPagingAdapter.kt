@@ -21,13 +21,15 @@ class RickynMortyPagingAdapter: PagingDataAdapter<RicknMorty, RickynMortyPagingA
 
         holder.binding.apply {
 
-            rnmText.text = "${currentItem?.name}"
-            val imageLink = currentItem?.image
+            holder.itemView.apply {
+                rnmText.text = "${currentItem?.name}"
+                val imageLink = currentItem?.image
 
 //            loading image here with COIL libarary
-            rnmImage.load(imageLink){
-                crossfade(true)
-                crossfade(1000)
+                rnmImage.load(imageLink){
+                    crossfade(true)
+                    crossfade(1000)
+                }
             }
         }
     }

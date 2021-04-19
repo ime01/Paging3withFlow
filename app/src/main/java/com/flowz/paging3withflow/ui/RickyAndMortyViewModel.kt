@@ -17,8 +17,5 @@ class RickyAndMortyViewModel @Inject constructor(private val apiService: ApiServ
         RickynMortyPagingSource(apiService)
     }.flow.cachedIn(viewModelScope)
 
-    companion object{
-        const val TAG = "Paging Source"
-    }
 }
 

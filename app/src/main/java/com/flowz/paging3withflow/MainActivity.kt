@@ -3,8 +3,10 @@ package com.flowz.paging3withflow
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.flowz.paging3withflow.adapter.RickynMortyPagingAdapter
@@ -43,28 +45,32 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
 
+//        binding.progressBar.visibility = View.VISIBLE
+
         lifecycleScope.launch {
 
-            viewModel.ricknMortyDataFromNetwork.collect{pagingData->
-                Log.e("RnM", "${pagingData.toString()}")
-                rnmAdapter.submitData(pagingData)
+            viewModel.ricknMortyDataFromNetwork.collect{
+                Log.e("RnM", "$it")
+                rnmAdapter.submitData(it)
 
             }
         }
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun loadReclyclerView() {
         rnmAdapter = RickynMortyPagingAdapter()
 
-        binding.rvRicknmorty.layoutManager =  StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.rvRicknmorty.adapter = rnmAdapter
+//        binding.rvRicknmorty.layoutManager =  StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//        binding.rvRicknmorty.layoutManager =  LinearLayoutManager(this)
+//        binding.rvRicknmorty.adapter = rnmAdapter
 
+        binding.rvRicknmorty.apply {
 
-//        binding.rvRicknmorty.apply {
-//
-//           layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//
-//            adapter = rnmAdapter
-//        }
+           layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+            adapter = rnmAdapter
+            setHasFixedSize(true)
+        }
     }
 }

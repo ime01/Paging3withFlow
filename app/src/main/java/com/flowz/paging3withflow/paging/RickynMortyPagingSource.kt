@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.flowz.paging3withflow.models.RicknMorty
-import com.flowz.paging3withflow.models.RickynMortyResponse
 import com.flowz.paging3withflow.network.ApiServiceCalls
 
 class RickynMortyPagingSource(private val apiService: ApiServiceCalls): PagingSource<Int, RicknMorty>() {
@@ -17,9 +16,9 @@ class RickynMortyPagingSource(private val apiService: ApiServiceCalls): PagingSo
             val currentPage = params.key ?:1
 
             val response = apiService.getAllCharacters(currentPage)
-            Log.e(TAG, "$response")
+//            Log.e(TAG, "$response")
 
-            val data = response.body()?.ricknMorties?: emptyList()
+            val data = response.body()?.results?: emptyList()
 
             val responseData = mutableListOf<RicknMorty>()
             responseData.addAll(data)
@@ -34,7 +33,6 @@ class RickynMortyPagingSource(private val apiService: ApiServiceCalls): PagingSo
 
         }catch (e:Exception){
             LoadResult.Error(e)
-//            Log.e(TAG,"Error")
         }
     }
 
