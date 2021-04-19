@@ -31,21 +31,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-//        if (getConnectionType(this) ){
+        if (getConnectionType(this) ){
             loadReclyclerView()
             loadData()
             showSnackbar(binding.rvRicknmorty, "Data fetched from network")
-//            }
-//    else{
-//            showSnackbar(binding.rvRicknmorty, getString(R.string.no_network_error))
-//        }
+            }
+    else{
+            showSnackbar(binding.rvRicknmorty, getString(R.string.no_network_error))
+        }
 
     }
 
     private fun loadData() {
 
-//        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch {
 
@@ -60,10 +59,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadReclyclerView() {
         rnmAdapter = RickynMortyPagingAdapter()
-
-//        binding.rvRicknmorty.layoutManager =  StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        binding.rvRicknmorty.layoutManager =  LinearLayoutManager(this)
-//        binding.rvRicknmorty.adapter = rnmAdapter
 
         binding.rvRicknmorty.apply {
 
