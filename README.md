@@ -1,4 +1,4 @@
-# Paging3withFlow
+# Paging3withFlowandDAGGERHILT
 An app utilizing Pagination 3 libary, Flow, DaggerHilt and Latest Jetpack Libraries to fetch Rick and Morty characters from an Api
 
 PAGINATION 3 
