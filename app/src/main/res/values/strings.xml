@@ -3,4 +3,8 @@
     <string name="no_network_error">No Network, Ensure you have an Internet connection and try again</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="data_from_network">Data fetched from network</string>
+    <string name="retry">RETRY</string>
+    <string name="unable_to_fetch_data">Unable to fetch Data</string>
+    <string name="not_loaded">New page  could not be loaded</string>
 </resources>

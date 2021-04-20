@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.flowz.paging3withflow.R
 import com.flowz.paging3withflow.adapter.RickynMortyPagingAdapter
@@ -40,21 +42,39 @@ class RicknMortyGridFragment : Fragment(R.layout.fragment_rickn_morty_grid), Ric
 
         _binding = FragmentRicknMortyGridBinding.bind(view)
 
-
         if (getConnectionType(requireContext()) ){
             loadReclyclerView()
             loadData()
-            showSnackbar(binding.rvRicknmorty, "Data fetched from network")
+            rnmAdapter.addLoadStateListener {loadState->
+                binding.apply {
+                    progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                    rvRicknmorty.isVisible = loadState.source.refresh is LoadState.NotLoading
+                    buttonRetry.isVisible = loadState.source.refresh is LoadState.Error
+                    errorText.isVisible = loadState.source.refresh is LoadState.Error
+
+                    if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached&& rnmAdapter.itemCount<1){
+                        rvRicknmorty.isVisible = false
+                        errorText.isVisible = true
+                    }else{
+                        errorText.isVisible = false
+                    }
+                }
+            }
+
+            showSnackbar(binding.rvRicknmorty, getString(R.string.data_from_network))
         } else{
             showSnackbar(binding.rvRicknmorty, getString(R.string.no_network_error))
         }
+
+        binding.buttonRetry.setOnClickListener {
+            rnmAdapter.retry()
+        }
+
 
     }
 
     @InternalCoroutinesApi
     private fun loadData() {
-
-//        binding.progressBar.visibility = View.VISIBLE
 
         lifecycleScope.launch {
 
@@ -74,7 +94,10 @@ class RicknMortyGridFragment : Fragment(R.layout.fragment_rickn_morty_grid), Ric
 
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-            adapter = rnmAdapter
+            adapter = rnmAdapter.withLoadStateHeaderAndFooter(
+                header = RicknMortyLoadStateAdapter{rnmAdapter.retry()},
+                footer = RicknMortyLoadStateAdapter{rnmAdapter.retry()}
+            )
             setHasFixedSize(true)
         }
     }
