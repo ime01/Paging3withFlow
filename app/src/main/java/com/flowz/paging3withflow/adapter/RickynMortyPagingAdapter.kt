@@ -7,12 +7,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.flowz.paging3withflow.R
 import com.flowz.paging3withflow.databinding.RickNMortyItemBinding
 import com.flowz.paging3withflow.models.RicknMorty
 
-class RickynMortyPagingAdapter: PagingDataAdapter<RicknMorty, RickynMortyPagingAdapter.MyViewHolder>(diffCallback) {
-
-    inner class MyViewHolder(val binding: RickNMortyItemBinding):RecyclerView.ViewHolder(binding.root)
+class RickynMortyPagingAdapter(private val listener: OnitemClickListener): PagingDataAdapter<RicknMorty, RickynMortyPagingAdapter.MyViewHolder>(diffCallback) {
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -27,6 +26,8 @@ class RickynMortyPagingAdapter: PagingDataAdapter<RicknMorty, RickynMortyPagingA
 
 //            loading image here with COIL libarary
                 rnmImage.load(imageLink){
+                    error(R.drawable.ic_baseline_error_24)
+                    placeholder(R.drawable.ic_baseline_error_24)
                     crossfade(true)
                     crossfade(1000)
                 }
@@ -37,6 +38,27 @@ class RickynMortyPagingAdapter: PagingDataAdapter<RicknMorty, RickynMortyPagingA
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(RickNMortyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
+
+    interface OnitemClickListener {
+        fun onItemClick(ricknMorty: RicknMorty)
+
+    }
+
+    inner class MyViewHolder(val binding: RickNMortyItemBinding):RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position!= RecyclerView.NO_POSITION){
+                    val item = getItem(position)
+                    if (item!= null){
+                        listener.onItemClick(item)
+                    }
+                }
+            }
+        }
+    }
+
+
 
     companion object{
         val diffCallback = object :DiffUtil.ItemCallback<RicknMorty>(){
@@ -52,3 +74,5 @@ class RickynMortyPagingAdapter: PagingDataAdapter<RicknMorty, RickynMortyPagingA
     }
 
 }
+
+

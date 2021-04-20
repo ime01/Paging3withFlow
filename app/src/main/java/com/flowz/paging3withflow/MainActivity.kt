@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -22,50 +25,22 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var rnmAdapter: RickynMortyPagingAdapter
-    private val viewModel: RickyAndMortyViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        if (getConnectionType(this) ){
-            loadReclyclerView()
-            loadData()
-            showSnackbar(binding.rvRicknmorty, "Data fetched from network")
-            }
-    else{
-            showSnackbar(binding.rvRicknmorty, getString(R.string.no_network_error))
-        }
+        navController = findNavController(R.id.nav_host_fragment)
+
+        setupActionBarWithNavController(navController)
 
     }
 
-    private fun loadData() {
+    override fun onSupportNavigateUp(): Boolean {
 
-        binding.progressBar.visibility = View.VISIBLE
-
-        lifecycleScope.launch {
-
-            viewModel.ricknMortyDataFromNetwork.collect{
-                Log.e("RnM", "$it")
-                rnmAdapter.submitData(it)
-
-            }
-        }
-        binding.progressBar.visibility = View.GONE
+        return navController.navigateUp()|| super.onSupportNavigateUp()
     }
 
-    private fun loadReclyclerView() {
-        rnmAdapter = RickynMortyPagingAdapter()
 
-        binding.rvRicknmorty.apply {
-
-           layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-            adapter = rnmAdapter
-            setHasFixedSize(true)
-        }
-    }
 }

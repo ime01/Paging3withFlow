@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ricknmortynav_graph"
+    app:startDestination="@id/ricknMortyGridFragment">
+
+    <fragment
+        android:id="@+id/ricknMortyGridFragment"
+        android:name="com.flowz.paging3withflow.ui.gridview.RicknMortyGridFragment"
+        android:label="Characters Grid"
+        tools:layout="@layout/fragment_rickn_morty_grid" >
+        <action
+            android:id="@+id/action_ricknMortyGridFragment_to_rickyAndMortyDetailFragment"
+            app:destination="@id/rickyAndMortyDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/rickyAndMortyDetailFragment"
+        android:name="com.flowz.paging3withflow.ui.detailview.RickyAndMortyDetailFragment"
+        android:label="Characters Detail"
+        tools:layout="@layout/fragment_ricky_and_morty_detail" >
+        <argument
+            android:name="ricknmorty"
+            app:argType="com.flowz.paging3withflow.models.RicknMorty"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_rickyAndMortyDetailFragment_to_ricknMortyGridFragment"
+            app:destination="@id/ricknMortyGridFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+
+</navigation>
