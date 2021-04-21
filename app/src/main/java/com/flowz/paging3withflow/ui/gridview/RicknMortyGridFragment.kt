@@ -42,7 +42,6 @@ class RicknMortyGridFragment : Fragment(R.layout.fragment_rickn_morty_grid), Ric
 
         _binding = FragmentRicknMortyGridBinding.bind(view)
 
-        if (getConnectionType(requireContext()) ){
             loadReclyclerView()
             loadData()
             rnmAdapter.addLoadStateListener {loadState->
@@ -61,10 +60,6 @@ class RicknMortyGridFragment : Fragment(R.layout.fragment_rickn_morty_grid), Ric
                 }
             }
 
-            showSnackbar(binding.rvRicknmorty, getString(R.string.data_from_network))
-        } else{
-            showSnackbar(binding.rvRicknmorty, getString(R.string.no_network_error))
-        }
 
         binding.buttonRetry.setOnClickListener {
             rnmAdapter.retry()
@@ -88,6 +83,7 @@ class RicknMortyGridFragment : Fragment(R.layout.fragment_rickn_morty_grid), Ric
     }
 
     private fun loadReclyclerView() {
+
         rnmAdapter = RickynMortyPagingAdapter(this@RicknMortyGridFragment)
 
         binding.rvRicknmorty.apply {
